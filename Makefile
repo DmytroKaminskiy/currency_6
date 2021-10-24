@@ -3,7 +3,7 @@ SHELL := /bin/bash
 manage_py := python ./app/manage.py
 
 run:
-	$(manage_py) runserver 0:8000
+	$(manage_py) runserver 0:8002
 
 migrate:
 	$(manage_py) migrate
