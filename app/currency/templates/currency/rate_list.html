@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Table{% endblock title %}
+
+{% block content %}
+
+    <a href="{% url 'currency:rate-create' %}">Create Rate</a>
+
+    {% for rate in object_list %}
+        Id: {{ rate.id }}
+        Sale: {{ rate.sale }}
+        Buy: {{ rate.buy }}
+        Created: {{ rate.created }}
+        <a href="{% url 'currency:rate-details' rate.id %}">Details</a>
+        <a href="{% url 'currency:rate-update' rate.id %}">Edit</a>
+        <a href="{% url 'currency:rate-delete' rate.id %}">Delete</a>
+        <br>
+    {% endfor %}
+{% endblock content %}

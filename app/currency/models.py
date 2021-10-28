@@ -12,3 +12,7 @@ class Rate(models.Model):
     #     if not self.created:
     #         self.created = datetime.now()
     #     return super().save(*args, **kwargs)
+
+
+class Source(models.Model):
+    name = models.CharField(max_length=64)
