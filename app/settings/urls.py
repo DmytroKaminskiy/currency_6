@@ -1,13 +1,5 @@
 import debug_toolbar
 
-from currency.views import (
-    RateListView,
-    RateCreateView,
-    RateUpdateView,
-    RateDetailsView,
-    RateDeleteView,
-)
-
 from django.views.generic import (
     TemplateView,
 )
@@ -17,6 +9,7 @@ from django.urls import path, include
 
 
 urlpatterns = [
+    path('grappelli/', include('grappelli.urls')), # grappelli URLS
     path('admin/', admin.site.urls),
 
     path('__debug__/', include(debug_toolbar.urls)),

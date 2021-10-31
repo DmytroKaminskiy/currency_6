@@ -2,6 +2,8 @@ django
 django-debug-toolbar
 django-extensions
 ipython
+django-admin-rangefilter
+django-import-export
 
 # flake8
 flake8
