@@ -24,3 +24,12 @@ class Rate(models.Model):
 
 class Source(models.Model):
     name = models.CharField(max_length=64)
+
+
+class ContactUs(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(max_length=128)
+    reply_to = models.EmailField()
+    subject = models.CharField(max_length=128)
+    body = models.CharField(max_length=1024)
+    raw_content = models.TextField()

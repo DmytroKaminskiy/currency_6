@@ -9,7 +9,6 @@ from django.urls import path, include
 
 
 urlpatterns = [
-    path('grappelli/', include('grappelli.urls')), # grappelli URLS
     path('admin/', admin.site.urls),
 
     path('__debug__/', include(debug_toolbar.urls)),
