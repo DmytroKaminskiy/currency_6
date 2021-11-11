@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'import_export',
 
     'currency',
+    'account',
 ]
 
 MIDDLEWARE = [
@@ -150,9 +151,26 @@ LOGIN_REDIRECT_URL = reverse_lazy('index')
 LOGOUT_REDIRECT_URL = reverse_lazy('index')
 LOGIN_URL = reverse_lazy('login')
 
+AUTH_USER_MODEL = 'account.User'
 
 if DEBUG:
     import os  # only if you haven't already imported this
     import socket  # only if you haven't already imported this
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
     INTERNAL_IPS = [ip[:-1] + '1' for ip in ips] + ['127.0.0.1', '10.0.2.2']
+
+
+# custom settings
+DOMAIN = 'localhost:8000'  # TODO
+HTTP_SCHEMA = 'http'  # TODO
+
+'''
+1. email + password + confirm password (get email)
+2. email (get email) + password + confirm password
+3. email (get email) 7 days
+4. phone, passport, code (confirm) + login
+
+1. form (email, password, confirm password)
+2. send email with confirmation link
+3. Activation endpoint
+'''
