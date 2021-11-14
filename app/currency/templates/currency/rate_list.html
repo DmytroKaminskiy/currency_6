@@ -5,13 +5,14 @@
 {% block content %}
 
     <a href="{% url 'currency:rate-create' %}">Create Rate</a>
-
+    <br>
     {% for rate in object_list %}
         Id: {{ rate.id }}
         Type: {{ rate.get_type_display }}
         Sale: {{ rate.sale }}
         Buy: {{ rate.buy }}
         Created: {{ rate.created }}
+        Source: {{ rate.source.name }}
         <a href="{% url 'currency:rate-details' rate.id %}">Details</a>
         <a href="{% url 'currency:rate-update' rate.id %}">Edit</a>
         <a href="{% url 'currency:rate-delete' rate.id %}">Delete</a>

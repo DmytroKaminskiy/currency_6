@@ -12,7 +12,7 @@ class Rate(models.Model):
         # default=1, WRONG
         default=mch.RateTypeChoices.USD,  # correct
     )  # if field contains choices (type), hr = object.get_{field_name}_display() (object.get_type_display())
-    source = models.CharField(max_length=25)
+    source = models.ForeignKey('currency.Source', on_delete=models.CASCADE)
 
     # to-do, in-progress, done
 
@@ -23,7 +23,17 @@ class Rate(models.Model):
 
 
 class Source(models.Model):
+    '''
+    OneToOne - X
+    OneToMany - Y
+    ManyToMany - X
+
+    N + 1
+    '''
     name = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.name
 
 
 class ContactUs(models.Model):
