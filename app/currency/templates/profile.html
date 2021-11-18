@@ -1,11 +1,21 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}Profile{% endblock title %}
 
 {% block content %}
+
+{#    {% if request.user.avatar %}#}
+{#    <img src="{{ request.user.avatar.url }}" height="100" width="150">#}
+{#    {% else %}#}
+{#    <img src="{% static 'images/anonymous-avatar.jpg' %}" height="100" width="150">#}
+{#    {% endif %}#}
+    <img src="{{ request.user.avatar_url }}" height="100" width="150">
+    <br>
     My Profile
 
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Submit</button>
