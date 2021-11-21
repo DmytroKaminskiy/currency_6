@@ -3,6 +3,7 @@ from time import time
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.urls import reverse, reverse_lazy
+from currency.tasks import slow, send_email_in_background
 
 from currency.models import Rate, ContactUs
 from currency.forms import RateForm
@@ -66,7 +67,8 @@ class ContactUsCreateView(CreateView):
         'body',
     )
 
-    def _send_email(self):
+    def form_valid(self, form):
+        redirect = super().form_valid(form)
         subject = 'User ContactUs'
         body = f'''
             Request From: {self.object.name}
@@ -75,17 +77,19 @@ class ContactUsCreateView(CreateView):
 
             Body: {self.object.body}
         '''
-        send_mail(
-            subject,
-            body,
-            settings.DEFAULT_FROM_EMAIL,
-            [settings.DEFAULT_FROM_EMAIL],
-            fail_silently=False,
-        )
-
-    def form_valid(self, form):
-        redirect = super().form_valid(form)
-        self._send_email()
+        send_email_in_background.delay(subject, body)
+        # send_email_in_background.apply_async(args=(subject, body))
+        '''
+        00-8.59 | 9.00-19.00 | 19.01 - 23.59
+        9.00    |    send    | 9.00 next day
+        '''
+        # from datetime import datetime, timedelta
+        # eta = datetime(2021, 11, 21, 19, 00, 00)
+        # send_email_in_background.apply_async(
+        #     kwargs={'subject': subject, 'body': body},
+        #     countdown=120,
+            # eta=eta,
+        # )
         return redirect
 
 

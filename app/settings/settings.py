@@ -172,6 +172,10 @@ DOMAIN = 'localhost:8000'  # TODO
 HTTP_SCHEMA = 'http'  # TODO
 
 
+CELERY_BROKER_URL = 'amqp://localhost'
+# amqp, localhost, port=5672, user=guest, password=guest
+
+
 # AWS_S3_REGION_NAME = 'fra1'
 # AWS_S3_ENDPOINT_URL = 'https://hhhhjhj.fra1.digitaloceanspaces.com/'
 # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
