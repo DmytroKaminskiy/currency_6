@@ -2,7 +2,10 @@ from time import time
 
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
+from django_filters.views import FilterView
 from django.urls import reverse, reverse_lazy
+
+from currency.filters import RateFilter
 from currency.tasks import send_email_in_background
 
 from currency.models import Rate, ContactUs
@@ -22,9 +25,20 @@ from django.conf import settings
 #     template_name = 'index.html'
 
 
-class RateListView(ListView):
+class RateListView(FilterView):
+    paginate_by = 10
     queryset = Rate.objects.all().order_by('-created').select_related('source')
+    filterset_class = RateFilter
     # queryset = Rate.objects.all()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=object_list, **kwargs)
+        context['pagination_filter'] = "&".join(
+            f"{key}={value}"
+            for key, value in self.request.GET.items()
+            if key != 'page'
+        )
+        return context
 
 
 class RateCreateView(CreateView):

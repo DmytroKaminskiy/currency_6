@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rangefilter',
     'import_export',
     'storages',
+    'django_filters',
 
     'currency',
     'account',

@@ -8,6 +8,7 @@ django-storages
 boto3
 Celery
 requests
+django-filter
 
 # flake8
 flake8
