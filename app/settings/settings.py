@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+from celery.schedules import crontab
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -174,6 +175,13 @@ HTTP_SCHEMA = 'http'  # TODO
 
 CELERY_BROKER_URL = 'amqp://localhost'
 # amqp, localhost, port=5672, user=guest, password=guest
+CELERY_BEAT_SCHEDULE = {
+    'parse_privatbank': {
+        'task': 'currency.tasks.parse_privatbank',
+        'schedule': crontab(minute='*/1'),
+        # 'schedule': crontab(minute='*/15'),
+    },
+}
 
 
 # AWS_S3_REGION_NAME = 'fra1'

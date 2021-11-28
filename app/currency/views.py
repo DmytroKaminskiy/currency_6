@@ -3,7 +3,7 @@ from time import time
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.urls import reverse, reverse_lazy
-from currency.tasks import slow, send_email_in_background
+from currency.tasks import send_email_in_background
 
 from currency.models import Rate, ContactUs
 from currency.forms import RateForm
@@ -23,7 +23,7 @@ from django.conf import settings
 
 
 class RateListView(ListView):
-    queryset = Rate.objects.all().select_related('source')
+    queryset = Rate.objects.all().order_by('-created').select_related('source')
     # queryset = Rate.objects.all()
 
 

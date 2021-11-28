@@ -31,6 +31,7 @@ class Source(models.Model):
     N + 1
     '''
     name = models.CharField(max_length=64)
+    code_name = models.CharField(max_length=64, unique=True)
 
     def __str__(self):
         return self.name
