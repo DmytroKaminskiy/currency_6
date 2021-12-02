@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'import_export',
     'storages',
     'django_filters',
+    'rest_framework',
 
     'currency',
     'account',

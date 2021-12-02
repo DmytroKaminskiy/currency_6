@@ -9,6 +9,9 @@ boto3
 Celery
 requests
 django-filter
+djangorestframework
+djangorestframework-yaml
+djangorestframework-xml
 
 # flake8
 flake8
