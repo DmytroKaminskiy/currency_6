@@ -19,7 +19,7 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('currency/', include('currency.urls')),
     path('account/', include('account.urls')),
-    path('api/', include('api.urls')),
+    path('api/v1/', include('api.v1.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

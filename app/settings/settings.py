@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+from datetime import timedelta
 
 from celery.schedules import crontab
 from pathlib import Path
@@ -17,7 +18,6 @@ from pathlib import Path
 from django.urls import reverse, reverse_lazy
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -29,7 +29,6 @@ SECRET_KEY = 'django-insecure-r5e$nvvd#k^)8qv#r_z_x9eso-ux=17ahc87(90ig6icx*0l*$
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -48,6 +47,8 @@ INSTALLED_APPS = [
     'storages',
     'django_filters',
     'rest_framework',
+    'rest_framework_simplejwt',
+    'drf_yasg',
 
     'currency',
     'account',
@@ -87,7 +88,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'settings.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -97,7 +97,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -117,7 +116,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -130,7 +128,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -166,14 +163,13 @@ AUTH_USER_MODEL = 'account.User'
 if DEBUG:
     import os  # only if you haven't already imported this
     import socket  # only if you haven't already imported this
+
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
     INTERNAL_IPS = [ip[:-1] + '1' for ip in ips] + ['127.0.0.1', '10.0.2.2']
-
 
 # custom settings
 DOMAIN = 'localhost:8000'  # TODO
 HTTP_SCHEMA = 'http'  # TODO
-
 
 CELERY_BROKER_URL = 'amqp://localhost'
 # amqp, localhost, port=5672, user=guest, password=guest
@@ -185,6 +181,45 @@ CELERY_BEAT_SCHEDULE = {
     },
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (  # 403
+        # 'rest_framework.permissions.IsAuthenticated',
+    ),
+    # 'DEFAULT_PAGINATION_CLASS': '',
+    'DEFAULT_THROTTLE_RATES': {
+        'currency': '2/min',
+        # 'user': '1000/day',
+    }
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=14),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+
+    'AUTH_HEADER_TYPES': ('Bearer', 'JWT',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+
+    'JTI_CLAIM': 'jti',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}
 
 # AWS_S3_REGION_NAME = 'fra1'
 # AWS_S3_ENDPOINT_URL = 'https://hhhhjhj.fra1.digitaloceanspaces.com/'

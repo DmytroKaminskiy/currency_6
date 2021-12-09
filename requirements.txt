@@ -12,6 +12,8 @@ django-filter
 djangorestframework
 djangorestframework-yaml
 djangorestframework-xml
+djangorestframework-simplejwt
+drf-yasg
 
 # flake8
 flake8
