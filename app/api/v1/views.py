@@ -30,6 +30,10 @@ class RateViewSet(viewsets.ModelViewSet):
     # renderer_classes = (JSONRenderer, YAMLRenderer, XMLRenderer)
     # http_method_names = ['get', 'post', 'head', 'options', 'put', 'patch']
 
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        # send email
+
 
 # class SourceViewSet:
 #     throttle_classes = [AnonCurrencyThrottle]

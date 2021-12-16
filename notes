@@ -12,3 +12,24 @@ Prog
 4. Integration
 
 5. Load test
+
+all()
+filter()
+exclude()
+order_by()
+distinct()
+values_list(flat=True)
+
+get_or_create()
+update_or_create()
+
+exists()!!!
+update()!!!
+
+select_related
+prefetch_related
+only
+defer
+
+
+select-for-update

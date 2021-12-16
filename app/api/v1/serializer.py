@@ -14,3 +14,8 @@ class RateSerializer(serializers.ModelSerializer):
             'source',
             'type',
         )
+
+    def create(self, validated_data):
+        instance = super().create(validated_data)
+        # send email
+        return instance
