@@ -1,10 +1,15 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .pagination import RatePagination
 from .serializer import RateSerializer
 from .filters import RateFilter
-from currency.models import Rate
+from currency.models import Rate, Source
+from currency import model_choices as mch, consts
 
+from django.core.cache import cache
 from django_filters import rest_framework as filters
 from rest_framework import filters as rest_framework_filters
 
@@ -34,6 +39,26 @@ class RateViewSet(viewsets.ModelViewSet):
         super().perform_create(serializer)
         # send email
 
+
+class LatestRatesView(APIView):
+    permission_classes = (AllowAny, )
+    def get(self, request):
+        latest_rates = cache.get(consts.LATEST_RATE_KEY)
+        if latest_rates is not None:
+            return Response({'rates': latest_rates})
+
+        latest_rates = []
+        for source_obj in Source.objects.all():
+            for currency_type in mch.RateTypeChoices:
+                latest_rate = Rate.objects\
+                    .filter(type=currency_type, source=source_obj)\
+                    .order_by('-created')\
+                    .first()
+                if latest_rate:
+                    latest_rates.append(RateSerializer(latest_rate).data)
+
+        cache.set(consts.LATEST_RATE_KEY, latest_rates, 60 * 60 * 24 * 7)
+        return Response({'rates': latest_rates})
 
 # class SourceViewSet:
 #     throttle_classes = [AnonCurrencyThrottle]
