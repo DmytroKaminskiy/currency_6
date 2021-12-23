@@ -171,7 +171,8 @@ if DEBUG:
 DOMAIN = 'localhost:8000'  # TODO
 HTTP_SCHEMA = 'http'  # TODO
 
-CELERY_BROKER_URL = 'amqp://localhost'
+# CELERY_BROKER_URL = 'amqp://localhost'
+CELERY_BROKER_URL = 'memory://localhost/'
 # amqp, localhost, port=5672, user=guest, password=guest
 CELERY_BEAT_SCHEDULE = {
     'parse_privatbank': {
