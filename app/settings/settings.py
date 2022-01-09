@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-r5e$nvvd#k^)8qv#r_z_x9eso-ux=17ahc87(90ig6icx*0l*$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -136,6 +136,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+STATIC_ROOT = BASE_DIR.parent / 'static_content' / 'static'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.parent / 'static_content' / 'media'
@@ -251,3 +252,8 @@ SIMPLE_JWT = {
 2. send email with confirmation link
 3. Activation endpoint
 '''
+
+try:
+    from settings.settings_local import *
+except ImportError:
+    print('Local Settings Not Found!\n' * 5)

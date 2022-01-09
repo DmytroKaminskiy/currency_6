@@ -15,6 +15,8 @@ djangorestframework-xml
 djangorestframework-simplejwt
 drf-yasg
 pymemcache
+psycopg2-binary
+gunicorn
 
 # flake8
 flake8
