@@ -17,6 +17,7 @@ drf-yasg
 pymemcache
 psycopg2-binary
 gunicorn
+django-environ
 
 # flake8
 flake8

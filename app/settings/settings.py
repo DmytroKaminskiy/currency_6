@@ -9,6 +9,8 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+import os
+import environ
 from datetime import timedelta
 
 from celery.schedules import crontab
@@ -17,18 +19,35 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from django.urls import reverse, reverse_lazy
 
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False),
+    ALLOWED_HOSTS=(list, []),
+    RABBITMQ_DEFAULT_USER=(str, 'guest'),
+    RABBITMQ_DEFAULT_PASS=(str, 'guest'),
+    RABBITMQ_DEFAULT_PORT=(str, '5672'),
+    RABBITMQ_DEFAULT_HOST=(str, 'localhost'),
+
+    POSTGRES_HOST=(str, 'localhost'),
+    POSTGRES_PORT=(str, '5432'),
+
+    MEMCACHED_HOST=(str, 'localhost'),
+    MEMCACHED_PORT=(str, '11211'),
+)
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+environ.Env.read_env(os.path.join(BASE_DIR.parent, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-r5e$nvvd#k^)8qv#r_z_x9eso-ux=17ahc87(90ig6icx*0l*$'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
 # Application definition
 
@@ -93,8 +112,12 @@ WSGI_APPLICATION = 'settings.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env('POSTGRES_DB'),
+        'USER': env('POSTGRES_USER'),
+        'PASSWORD': env('POSTGRES_PASSWORD'),
+        'HOST': env('POSTGRES_HOST'),
+        'PORT': env('POSTGRES_PORT'),
     }
 }
 
@@ -173,7 +196,10 @@ DOMAIN = 'localhost:8000'  # TODO
 HTTP_SCHEMA = 'http'  # TODO
 
 # CELERY_BROKER_URL = 'amqp://localhost'
-CELERY_BROKER_URL = 'memory://localhost/'
+# CELERY_BROKER_URL = 'memory://localhost/'
+CELERY_BROKER_URL = f'amqp://{env("RABBITMQ_DEFAULT_USER")}:' \
+                    f'{env("RABBITMQ_DEFAULT_PASS")}@' \
+                    f'{env("RABBITMQ_DEFAULT_HOST")}:{env("RABBITMQ_DEFAULT_PORT")}//'
 # amqp, localhost, port=5672, user=guest, password=guest
 CELERY_BEAT_SCHEDULE = {
     'parse_privatbank': {
@@ -201,7 +227,7 @@ REST_FRAMEWORK = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
-        'LOCATION': '127.0.0.1:11211',
+        'LOCATION': f'{env("MEMCACHED_HOST")}:{env("MEMCACHED_PORT")}',
     }
 }
 
@@ -252,8 +278,3 @@ SIMPLE_JWT = {
 2. send email with confirmation link
 3. Activation endpoint
 '''
-
-try:
-    from settings.settings_local import *
-except ImportError:
-    print('Local Settings Not Found!\n' * 5)

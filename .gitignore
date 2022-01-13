@@ -3,3 +3,4 @@ env
 .idea
 app/db.sqlite3
 settings_local.py
+.env
