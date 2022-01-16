@@ -1,0 +1,4 @@
+fastapi[all]
+databases[postgresql]
+aiopg
+alembic
