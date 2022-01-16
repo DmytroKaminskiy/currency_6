@@ -159,7 +159,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
-STATIC_ROOT = BASE_DIR.parent / 'static_content' / 'static'
+# STATIC_ROOT = BASE_DIR.parent / 'static_content' / 'static'
+STATIC_ROOT = '/tmp/static'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.parent / 'static_content' / 'media'
@@ -184,6 +185,7 @@ LOGIN_URL = reverse_lazy('login')
 
 AUTH_USER_MODEL = 'account.User'
 
+# docker
 if DEBUG:
     import os  # only if you haven't already imported this
     import socket  # only if you haven't already imported this

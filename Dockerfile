@@ -1,15 +1,13 @@
-FROM python:3.9
+FROM python:3.9.9
 
-WORKDIR /home/build
+WORKDIR /project/code
 
-COPY requirements.txt .
+COPY requirements.txt requirements.txt
 
-# RUN apt update -y && apt install -y curl
-
-RUN pip install -r requirements.txt
-
-ENV PYTHONPATH "/home/build/app"
+RUN pip3 install -r requirements.txt
 
 COPY . .
 
-CMD ["tail", "-f", "/dev/null"]
+ENV PYTHONPATH /project/code/app
+
+CMD gunicorn --workers 4 --threads 4 settings.wsgi --bind 0.0.0.0:8000 --max-requests 10000 --log-level info
