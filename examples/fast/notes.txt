@@ -1,0 +1,3 @@
+kafkamottern@fakemail.io
+d8BELBxcHInzbpOwU.
+./ngrok authtoken 1fSJ8vaoQSkUgp1zJ7pL08CHfqj_34CVWUKaYwYDcH1vJ8av6
