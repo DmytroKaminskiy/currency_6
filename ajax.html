@@ -1,0 +1,73 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>A Basic HTML5 Template</title>
+</head>
+
+<body>
+
+<table id="ratesTable">
+    <tr>
+        <th>ID</th>
+        <th>Buy</th>
+        <th>Sale</th>
+        <th>Source</th>
+        <th>Created</th>
+    </tr>
+    <tr class="rateItem">
+        <td>1</td>
+        <td>27.7</td>
+        <td>27.8</td>
+        <td>PrivatBank</td>
+        <td>25 January</td>
+    </tr>
+</table>
+
+<button id="updateButton">Update Table</button>
+
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+
+<script>
+    $( document ).ready(function() {
+        $.get( "http://172.22.47.48:8000/api/v1/rates/", function( data ) {
+        $(".rateItem").remove();
+        for (let value of data.results) {
+          let template = `` +
+          `<tr class="rateItem">` +
+          `<td>${value.id}</td>` +
+          `<td>${value.buy}</td>` +
+          `<td>${value.sale}</td>` +
+          `<td>${value.source}</td>` +
+          `<td>${value.created}</td>` +
+          `</tr>`
+          console.log(template);
+          $( "#ratesTable" ).append(template);
+        }
+      });
+    });
+    $("#updateButton").on( "click", function() {
+      $.get( "http://172.22.47.48:8000/api/v1/rates/", function( data ) {
+        $(".rateItem").remove();
+        for (let value of data.results) {
+          let template = `` +
+          `<tr class="rateItem">` +
+          `<td>${value.id}</td>` +
+          `<td>${value.buy}</td>` +
+          `<td>${value.sale}</td>` +
+          `<td>${value.source}</td>` +
+          `<td>${value.created}</td>` +
+          `</tr>`
+          console.log(template);
+          $( "#ratesTable" ).append(template);
+        }
+      });
+    });
+</script>
+
+</body>
+</html>

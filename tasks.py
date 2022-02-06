@@ -32,10 +32,10 @@ assert split([1, 2, 3, 4, 5], 10) == [
     [1, 2, 3, 4, 5],
 ]
 
-'''
-Rate
-C POST - create
-R GET - read
-U PUT/PATCH - update
-D DELETE - delete
-'''
+# '''
+# Rate
+# C POST - create
+# R GET - read
+# U PUT/PATCH - update
+# D DELETE - delete
+# '''

@@ -18,6 +18,7 @@ pymemcache
 psycopg2-binary
 gunicorn
 django-environ
+django-cors-headers
 
 # flake8
 flake8
